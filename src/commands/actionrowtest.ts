@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder } from "@discordjs/builders";
+import { ActionRowBuilder, ButtonBuilder, MessageActionRowComponentBuilder } from "@discordjs/builders";
 import { ButtonStyle, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
 module.exports = {
@@ -10,8 +10,8 @@ module.exports = {
             .setCustomId("btn1")
             .setLabel("button 1")
             .setStyle(ButtonStyle.Primary);
-        const row = new ActionRowBuilder()
-            .addComponents(buttn1).toJSON();
+        const row = new ActionRowBuilder<MessageActionRowComponentBuilder>()
+            .addComponents(buttn1);
         await interaction.reply({
             content: "test",
             components: [row],
