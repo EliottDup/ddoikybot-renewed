@@ -38,9 +38,9 @@ export interface DBChannel {
   user_id: string;
   server_id: string;
   last_message?: string;
-  name?: string;
-  streak?: number;
-  high_streak?: number;
-  draw_counter?: number;
-  is_alive?: boolean;
+  name: string;
+  streak: number;
+  high_streak: number;
+  draw_counter: number;
+  is_alive: boolean;
 };
