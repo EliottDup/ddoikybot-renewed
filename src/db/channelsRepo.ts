@@ -19,6 +19,14 @@ export async function createChannelsTable(): Promise<void> {
   await execute(sql);
 }
 
+export async function upsertChannel(channel: DBChannel): Promise<void> {
+  await execute(
+    `INSERT OR REPLACE INTO Channels (channel_id, user_id, server_id, last_message, name, streak, high_streak, draw_counter, is_alive) 
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [channel.channel_id, channel.user_id, channel.server_id, channel.last_message, channel.name, channel.streak, channel.high_streak, channel.draw_counter, channel.is_alive]
+  );
+}
+
 export async function getChannelsByServer(serverId: string): Promise<DBChannel[]> {
   return fetchAll<DBChannel>("SELECT * FROM Channels WHERE server_id = ?", [serverId]);
 }

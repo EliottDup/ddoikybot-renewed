@@ -44,8 +44,13 @@ for (const file of eventFiles){
     }
 }
 
-process.on('SIGINT', closeConnection);
-process.on('SIGTERM', closeConnection);
+function shutdown(){
+    client.destroy();
+    closeConnection();
+}
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
 
 // Other
 

@@ -1,11 +1,32 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, Collection, Client, ButtonInteraction } from "discord.js";
+import { SlashCommandBuilder, ChatInputCommandInteraction, Collection, Client, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
 
-// declare global {
-export type CommandModule = {data: SlashCommandBuilder; execute(interaction: ChatInputCommandInteraction): Promise<void>;}
+export type CommandModule = {
+  data: SlashCommandBuilder; 
+  execute(interaction: ChatInputCommandInteraction): Promise<void>;
+};
+
 export type CommandCollection = Collection<string, CommandModule>;
-export type ButtonModule =  {name: string; execute(interaction: ButtonInteraction): Promise<void>;}
+
+export type ButtonModule =  {
+  name: string; 
+  execute(interaction: ButtonInteraction): Promise<void>;
+};
+
 export type ButtonCollection = Collection<string, ButtonModule>;
-export type EventModule = { name: string; once: boolean; execute(commands: CommandCollection, ...args: any[]): any};
+
+export type EventModule = { 
+  name: string; once: boolean;
+  execute(commands: CommandCollection, ...args: any[]): any
+};
+
+export type ModalCollection = Collection<string, ModalModule>;
+
+export type ModalModule =  {
+  name: string; 
+  execute(interaction: ModalSubmitInteraction): Promise<void>;
+};
+
+
 export interface DBServer {
   id: string;
   ddoiky_active: boolean;
@@ -23,4 +44,3 @@ export interface DBChannel {
   draw_counter?: number;
   is_alive?: boolean;
 };
-// }

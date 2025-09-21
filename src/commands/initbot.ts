@@ -14,10 +14,12 @@ module.exports = {
                 .addChannelTypes(ChannelType.GuildText)
         ).setDescription("running this command initialises the bot in this server.")
         .setContexts(InteractionContextType.Guild),
+
     async execute(interaction: ChatInputCommandInteraction){
         if (!interaction.guildId) return;
         getServer(interaction.guildId).then( async ( server ) => {
             if (!server){
+                if (!interaction.guildId) return;
 
                 const drewButton = new ButtonBuilder()
                     .setCustomId("idrew")
@@ -35,8 +37,8 @@ module.exports = {
                 const channel = interaction.options.getChannel<ChannelType.GuildText>("stat-channel");
                 if (!channel) return;
                 let message: Message<true> = await channel?.send({content: "temp:b: message", components: [row.toJSON()]});
-
-                let dbServer: DBServer = {id: interaction.id, ddoiky_active: false, main_channel: channel.id, stats_message: message.id};
+                
+                let dbServer: DBServer = {id: interaction.guildId, ddoiky_active: false, main_channel: channel.id, stats_message: message.id};
                 upsertServer(dbServer);
 
                 interaction.reply({content: "done", flags: MessageFlags.Ephemeral});
