@@ -14,7 +14,8 @@ export async function createChannelsTable(): Promise<void> {
       draw_counter INTEGER,
       is_alive BOOL,
       FOREIGN KEY(server_id) REFERENCES Servers(id),
-      UNIQUE(server_id, user_id)
+      UNIQUE(server_id, user_id),
+      UNIQUE(server_id, name)
     );`;
   await execute(sql);
 }
@@ -29,6 +30,10 @@ export async function upsertChannel(channel: DBChannel): Promise<void> {
 
 export async function getChannelsByServer(serverId: string): Promise<DBChannel[]> {
   return fetchAll<DBChannel>("SELECT * FROM Channels WHERE server_id = ?", [serverId]);
+}
+
+export async function getChannelByNameInGuild(serverId: string, name: string): Promise<DBChannel | undefined>{
+  return fetchFirst<DBChannel>("SELECT * FROM Channels WHERE server_id = ? AND name = ?", [serverId, name]);
 }
 
 export async function getUserChannelInGuild(serverId: string, userId: string): Promise<DBChannel | undefined>{
