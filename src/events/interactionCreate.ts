@@ -65,7 +65,6 @@ module.exports = {
             interaction: ModalSubmitInteraction;
             const mdl = modals.get(interaction.customId);
             if (!mdl) {
-                interaction.reply({content: "dev forgor to do this :skull:", flags: MessageFlags.Ephemeral});
                 return;
             }
             try {

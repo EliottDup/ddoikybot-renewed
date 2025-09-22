@@ -24,3 +24,10 @@ export async function upsertServer(server: DBServer) {
     [server.id, server.ddoiky_active, server.main_channel, server.stats_message]
   );
 }
+
+export async function deleteServer(serverID: string){
+  await Promise.all([
+    execute(`DELETE FROM Servers WHERE id = ?`, [serverID]),
+    execute(`DELETE FROM Channels WHERE server_id == ?`, [serverID])
+    ]);
+}

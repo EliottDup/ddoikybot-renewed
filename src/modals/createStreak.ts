@@ -3,7 +3,7 @@ import { DBChannel } from "../types/types";
 import { upsertChannel } from "../db/channelsRepo";
 
 module.exports = {
-    name: "createStreak",
+    name: "createStreak:modal:0",
     async execute(interaction: ModalSubmitInteraction){
         if (!interaction.guildId) return;
         let name: string = interaction.fields.getTextInputValue("streakCreateName");

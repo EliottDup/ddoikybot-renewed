@@ -22,12 +22,12 @@ module.exports = {
                 if (!interaction.guildId) return;
 
                 const drewButton = new ButtonBuilder()
-                    .setCustomId("idrew")
+                    .setCustomId("drew:button:0")
                     .setLabel("I Drew")
                     .setStyle(ButtonStyle.Success);
                 
                 const createOrManageButton = new ButtonBuilder()
-                    .setCustomId("managestreak")
+                    .setCustomId("manageStreak:button:0")
                     .setLabel("Manage or Create Streak")
                     .setStyle(ButtonStyle.Success);
 

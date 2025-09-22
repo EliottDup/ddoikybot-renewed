@@ -26,7 +26,7 @@ export type ModalModule =  {
   execute(interaction: ModalSubmitInteraction): Promise<void>;
 };
 
-
+// DB structure & types
 export interface DBServer {
   id: string;
   ddoiky_active: boolean;

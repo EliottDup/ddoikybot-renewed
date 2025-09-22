@@ -10,22 +10,22 @@ module.exports = {
     async execute(interaction: ChatInputCommandInteraction){
         let editstreakButton = new ButtonBuilder()
             .setLabel("Edit Streak")
-            .setCustomId("editStreakModeratorButton")
+            .setCustomId("editStreakModerator:button:0")
             .setStyle(ButtonStyle.Primary);
 
         let editServerButton = new ButtonBuilder()
             .setLabel("Edit Server")
-            .setCustomId("editServerModeratorButton")
+            .setCustomId("editServer:button:0")
             .setStyle(ButtonStyle.Primary);
         
         let deleteStreakButton = new ButtonBuilder()
             .setLabel("⚠️ Delete Streak")
-            .setCustomId("DeleteStreakModeratorButton")
+            .setCustomId("DeleteStreakModerator:button")
             .setStyle(ButtonStyle.Danger);
 
         let deleteServerButton = new ButtonBuilder()
             .setLabel("⚠️ Delete Server")
-            .setCustomId("DeleteServerModeratorButton")
+            .setCustomId("deleteServer:button:0")
             .setStyle(ButtonStyle.Danger);
 
         let row: ActionRowBuilder<MessageActionRowComponentBuilder> = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(editstreakButton, editServerButton, deleteStreakButton, deleteServerButton);
