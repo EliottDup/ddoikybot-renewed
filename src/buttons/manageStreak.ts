@@ -4,7 +4,7 @@ import { getUserChannelInGuild } from "../db/channelsRepo";
 import { DBChannel } from "../types/types";
 
 module.exports = {
-    name: "manageStreak:button:0",
+    name: "manageStreak.button",
     async execute(interaction: ButtonInteraction){
         if (!interaction.guildId) return;
         let streak: DBChannel | undefined = (await getUserChannelInGuild(interaction.guildId, interaction.user.id));
@@ -13,7 +13,7 @@ module.exports = {
             return;
         } else {
             const modal = new ModalBuilder()
-                .setCustomId("createStreak:modal:0")
+                .setCustomId("createStreak.modal")
                 .setTitle("Create a Streak");
             
             const nameInput = new TextInputBuilder()

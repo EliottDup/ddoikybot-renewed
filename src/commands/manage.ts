@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, InteractionContextType, MessageActionRowComponentBuilder, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, InteractionContextType, MessageActionRowComponentBuilder, MessageFlags, PermissionFlagsBits, SlashCommandBuilder, StringSelectMenuBuilder } from "discord.js";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,22 +10,22 @@ module.exports = {
     async execute(interaction: ChatInputCommandInteraction){
         let editstreakButton = new ButtonBuilder()
             .setLabel("Edit Streak")
-            .setCustomId("editStreakModerator:button:0")
+            .setCustomId("editStreakModerator.button")
             .setStyle(ButtonStyle.Primary);
 
         let editServerButton = new ButtonBuilder()
             .setLabel("Edit Server")
-            .setCustomId("editServer:button:0")
+            .setCustomId("editServer.button")
             .setStyle(ButtonStyle.Primary);
         
         let deleteStreakButton = new ButtonBuilder()
             .setLabel("⚠️ Delete Streak")
-            .setCustomId("DeleteStreakModerator:button")
+            .setCustomId("DeleteStreakModerator.button")
             .setStyle(ButtonStyle.Danger);
 
         let deleteServerButton = new ButtonBuilder()
             .setLabel("⚠️ Delete Server")
-            .setCustomId("deleteServer:button:0")
+            .setCustomId("deleteServer.button")
             .setStyle(ButtonStyle.Danger);
 
         let row: ActionRowBuilder<MessageActionRowComponentBuilder> = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(editstreakButton, editServerButton, deleteStreakButton, deleteServerButton);

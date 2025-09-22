@@ -3,7 +3,7 @@ import { DBChannel } from "../types/types";
 import { getChannelByNameInGuild, upsertChannel } from "../db/channelsRepo";
 
 module.exports = {
-    name: "editStreakModerator:modal:0",
+    name: "editStreakModerator.modal",
     async execute(interaction: ModalSubmitInteraction){
         if (!interaction.guildId) return;
         let name = interaction.fields.getTextInputValue("name");

@@ -1,7 +1,7 @@
 import { ButtonInteraction, MessageFlags } from "discord.js";
 
 module.exports = {
-    name: "drew:button:0",
+    name: "drew.button",
     async execute(interaction: ButtonInteraction){
         interaction.reply({content: "You :regional_indicator_d:rew.", flags: MessageFlags.Ephemeral});
         // TODO:

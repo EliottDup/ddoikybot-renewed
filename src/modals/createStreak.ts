@@ -3,7 +3,7 @@ import { DBChannel } from "../types/types";
 import { upsertChannel } from "../db/channelsRepo";
 
 module.exports = {
-    name: "createStreak:modal:0",
+    name: "createStreak.modal",
     async execute(interaction: ModalSubmitInteraction){
         if (!interaction.guildId) return;
         let name: string = interaction.fields.getTextInputValue("streakCreateName");
@@ -34,7 +34,7 @@ module.exports = {
         upsertChannel(streak);
 
         let btn = new ButtonBuilder()
-            .setCustomId("deleteMessage:button:0")
+            .setCustomId("deleteMessage.button")
             .setLabel("Dismiss message")
             .setStyle(ButtonStyle.Primary);
 

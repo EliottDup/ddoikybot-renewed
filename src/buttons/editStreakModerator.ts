@@ -1,11 +1,11 @@
 import { ActionRow, ActionRowBuilder, ButtonInteraction, ModalActionRowComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 
 module.exports = {
-    name: "editStreakModerator:button:0",
+    name: "editStreakModerator.button",
     async execute(interaction: ButtonInteraction){
         let selectStreakModal = new ModalBuilder()
             .setTitle("Select Streak")
-            .setCustomId("editStreakModerator:modal:0");
+            .setCustomId("editStreakModerator.modal");
 
         let namefield = new TextInputBuilder()
             .setCustomId("name")

@@ -2,10 +2,10 @@ import { ActionRowBuilder, ButtonInteraction, MessageFlags, ModalActionRowCompon
 import { deleteServer } from '../db/serverRepo';
 import { TextInputBuilder } from '@discordjs/builders';
 module.exports = {
-    name: "deleteServer:button:0",
+    name: "deleteServer.button",
     async execute(interaction: ButtonInteraction){
         let confirmModal = new ModalBuilder()
-            .setCustomId("deleteServer:modal:confirm")
+            .setCustomId("deleteServer.modal.confirm")
             .setTitle("Are you sure you want to delete this server?")
             .addComponents(
                 new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
