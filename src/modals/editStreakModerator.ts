@@ -11,7 +11,6 @@ module.exports = {
             interaction.reply({content: `whoops, something went wrong, or the channel might not exist anymore`, flags: MessageFlags.Ephemeral});
             return;
         }
-        console.log(channel);
 
         let newNameInput = interaction.fields.getTextInputValue("newName");
         let streakInput = interaction.fields.getTextInputValue("streak");
@@ -20,11 +19,11 @@ module.exports = {
         
         channel.name = newNameInput;
 
-       channel.streak = Number.parseInt(streakInput);
-       if (Number.isNaN(channel.streak)){
-           interaction.reply({ content: `Value  \`${streakInput}\` for Streak is incorrect, please use a number, changes cancelled.`, flags: MessageFlags.Ephemeral});
-           return;
-       }
+        channel.streak = Number.parseInt(streakInput);
+        if (Number.isNaN(channel.streak)){
+            interaction.reply({ content: `Value  \`${streakInput}\` for Streak is incorrect, please use a number, changes cancelled.`, flags: MessageFlags.Ephemeral});
+            return;
+        }
 
         channel.high_streak = Number.parseInt(highStreakInput);
         if (Number.isNaN(channel.high_streak)){

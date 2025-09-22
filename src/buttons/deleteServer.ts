@@ -20,10 +20,5 @@ module.exports = {
             );
         
         interaction.showModal(confirmModal);
-
-        // const filter = (interaction: ModalSubmitInteraction) => interaction.customId === "serverDeleteConfirm";
-        // interaction.awaitModalSubmit({ filter: filter, time: 30_000 }).then(async interaction => {
-
-        // }).catch(console.error);
     }
 }

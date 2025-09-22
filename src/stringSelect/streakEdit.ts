@@ -11,7 +11,7 @@ module.exports = {
 
         let deleteStreakButton = new ButtonBuilder()
             .setLabel("⚠️ Delete Streak")
-            .setCustomId("DeleteStreakModerator.button")
+            .setCustomId(`deleteStreakModerator.button:${interaction.values[0]}`)
             .setStyle(ButtonStyle.Danger);
         
         let channel = await getChannelById(interaction.values[0]);

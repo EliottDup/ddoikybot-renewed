@@ -43,3 +43,7 @@ export async function getUserChannelInGuild(serverId: string, userId: string): P
 export async function getChannelById(channelId: string): Promise<DBChannel | undefined> {
   return fetchFirst<DBChannel>("SELECT * FROM Channels WHERE channel_id = ?", [channelId]);
 }
+
+export async function deleteChannel(channelId: string): Promise<void> {
+  await execute(`DELETE FROM Channels WHERE channel_id == ?`, [channelId])
+}
