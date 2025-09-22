@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, Collection, Client, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
+import { SlashCommandBuilder, ChatInputCommandInteraction, Collection, Client, ButtonInteraction, ModalSubmitInteraction, Interaction, StringSelectMenuInteraction } from 'discord.js';
 
 export type CommandModule = {
   data: SlashCommandBuilder; 
@@ -12,19 +12,20 @@ export type ButtonModule =  {
   execute(interaction: ButtonInteraction, ...args: string[]): Promise<void>;
 };
 
-export type ButtonCollection = Collection<string, ButtonModule>;
-
 export type EventModule = { 
   name: string; once: boolean;
-  execute(commands: CommandCollection, ...args: any[]): any
+  execute(commands: CommandCollection, ...args: any[]): Promise<void>
 };
 
-export type ModalCollection = Collection<string, ModalModule>;
-
-export type ModalModule =  {
+export type ModalModule = {
   name: string; 
   execute(interaction: ModalSubmitInteraction, ...args: string[]): Promise<void>;
 };
+
+export type StringSelectModule = {
+  name: string;
+  execute(Interaction: StringSelectMenuInteraction, ...args: string[]): Promise<void>;
+}
 
 // DB structure & types
 export interface DBServer {

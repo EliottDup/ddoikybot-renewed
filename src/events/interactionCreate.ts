@@ -1,37 +1,22 @@
-import { ButtonInteraction, ChatInputCommandInteraction, Collection, Events, Interaction, MessageFlags, ModalSubmitInteraction } from "discord.js";
-import { ButtonCollection, ButtonModule, CommandCollection, ModalCollection, ModalModule } from "../types/types";
+import { ButtonInteraction, ChatInputCommandInteraction, Events, Interaction, MessageFlags, ModalSubmitInteraction } from "discord.js";
+import { ButtonModule, CommandCollection, ModalModule, StringSelectModule } from "../types/types";
 import path from "path";
 import { readdirSync } from "fs";
 import { getServer } from "../db/serverRepo";
+import { loadModules } from "../utils/loadModules";
 
 function parseCustomId(customId: string): {id: string, args: string[]} {
     const [id, ...args] = customId.split(":");
     return {id, args};
 }
 
+const basepath = path.dirname(__dirname);
 
-const buttons: ButtonCollection = new Collection<string, ButtonModule>()
+const buttons = loadModules<ButtonModule>(basepath, "buttons")
 
+const modals = loadModules<ModalModule>(basepath, "modals")
 
-const buttonsPath = path.join(path.dirname(__dirname), "buttons");
-const buttonFiles = readdirSync(buttonsPath).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
-
-
-
-for (const file of buttonFiles) {
-    const button : ButtonModule = require(path.join(buttonsPath, file));
-    buttons.set(button.name, button);
-}
-
-const modals: ModalCollection = new Collection<string, ModalModule>();
-
-const modalsPath = path.join(path.dirname(__dirname), "modals");
-const modalFiles = readdirSync(modalsPath).filter(file => file.endsWith(".ts") || file.endsWith(".js"));
-
-for (const file of modalFiles) {
-    const modal : ModalModule = require(path.join(modalsPath, file));
-    modals.set(modal.name, modal);
-}
+const stringSelectMenus = loadModules<StringSelectModule>(basepath, "stringSelect");
 
 
 module.exports = {
@@ -48,8 +33,7 @@ module.exports = {
                 await interaction.reply({ content: "error: the command was stupid and had error", flags: MessageFlags.Ephemeral});
             }
             return;
-        } else 
-            if (interaction.isButton()){
+        } else if (interaction.isButton()) {
             
             if (!interaction.guildId) return;
             if (!await getServer(interaction.guildId)){
@@ -71,7 +55,7 @@ module.exports = {
                 await interaction.reply({ content: "error: the button was stupid and had error", flags: MessageFlags.Ephemeral});
             }
             return;
-        } else if (interaction.isModalSubmit()){
+        } else if (interaction.isModalSubmit()) {
             interaction: ModalSubmitInteraction;
             let { id, args } = parseCustomId(interaction.customId);
             const mdl = modals.get(id);
@@ -83,6 +67,8 @@ module.exports = {
             } catch (error) {
                 console.error(error);
             }
+        } else if (interaction.isStringSelectMenu()) {
+            
         }
     }
 }
