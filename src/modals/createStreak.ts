@@ -1,4 +1,4 @@
-import { ChannelType, MessageFlags, ModalSubmitInteraction } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, MessageActionRowComponentBuilder, MessageFlags, ModalSubmitInteraction } from "discord.js";
 import { DBChannel } from "../types/types";
 import { upsertChannel } from "../db/channelsRepo";
 
@@ -32,7 +32,15 @@ module.exports = {
         }
 
         upsertChannel(streak);
-        channel.send({content: `channel registered with name ${name} and user ${interaction.user.tag}`});
+
+        let btn = new ButtonBuilder()
+            .setCustomId("deleteMessage:button:0")
+            .setLabel("Dismiss message")
+            .setStyle(ButtonStyle.Primary);
+
+        let row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(btn);
+
+        channel.send({content: `channel registered with name ${name} and user ${interaction.user.tag}`, components: [row]});
         interaction.reply({content: "streak created", flags:MessageFlags.Ephemeral});
     }
 }

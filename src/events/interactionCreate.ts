@@ -51,6 +51,7 @@ module.exports = {
             interaction: ButtonInteraction;
             const btn = buttons.get(interaction.customId);
             if (!btn) {
+                console.log(`button "${interaction.customId}" not found`)
                 interaction.reply({content: "dev forgor to do this :skull:", flags: MessageFlags.Ephemeral});
                 return;
             }
