@@ -4,6 +4,12 @@ import path from "path";
 import { readdirSync } from "fs";
 import { getServer } from "../db/serverRepo";
 
+function parseCustomId(customId: string): {id: string, args: string[]} {
+    const [id, ...args] = customId.split(":");
+    return {id, args};
+}
+
+
 const buttons: ButtonCollection = new Collection<string, ButtonModule>()
 
 
@@ -42,21 +48,24 @@ module.exports = {
                 await interaction.reply({ content: "error: the command was stupid and had error", flags: MessageFlags.Ephemeral});
             }
             return;
-        } else if (interaction.isButton()){
+        } else 
+            if (interaction.isButton()){
+            
             if (!interaction.guildId) return;
             if (!await getServer(interaction.guildId)){
                 interaction.reply({ content: "This server is not set up. please use `/initialise`", flags:MessageFlags.Ephemeral });
                 return;
             }
             interaction: ButtonInteraction;
-            const btn = buttons.get(interaction.customId);
+            const { id, args } = parseCustomId(interaction.customId); 
+            const btn = buttons.get(id);
             if (!btn) {
-                console.log(`button "${interaction.customId}" not found`)
+                console.log(`button "${id}" not found`)
                 interaction.reply({content: "dev forgor to do this :skull:", flags: MessageFlags.Ephemeral});
                 return;
             }
             try {
-                await btn.execute(interaction);
+                await btn.execute(interaction, ...args);
             }catch (error) {
                 console.error(error);
                 await interaction.reply({ content: "error: the button was stupid and had error", flags: MessageFlags.Ephemeral});
@@ -64,12 +73,13 @@ module.exports = {
             return;
         } else if (interaction.isModalSubmit()){
             interaction: ModalSubmitInteraction;
-            const mdl = modals.get(interaction.customId);
+            let { id, args } = parseCustomId(interaction.customId);
+            const mdl = modals.get(id);
             if (!mdl) {
                 return;
             }
             try {
-                await mdl.execute(interaction);
+                await mdl.execute(interaction, ...args);
             } catch (error) {
                 console.error(error);
             }

@@ -9,7 +9,7 @@ export type CommandCollection = Collection<string, CommandModule>;
 
 export type ButtonModule =  {
   name: string; 
-  execute(interaction: ButtonInteraction): Promise<void>;
+  execute(interaction: ButtonInteraction, ...args: string[]): Promise<void>;
 };
 
 export type ButtonCollection = Collection<string, ButtonModule>;
@@ -23,7 +23,7 @@ export type ModalCollection = Collection<string, ModalModule>;
 
 export type ModalModule =  {
   name: string; 
-  execute(interaction: ModalSubmitInteraction): Promise<void>;
+  execute(interaction: ModalSubmitInteraction, ...args: string[]): Promise<void>;
 };
 
 // DB structure & types
