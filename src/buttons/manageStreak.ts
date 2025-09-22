@@ -1,5 +1,4 @@
-import { ActionRowBuilder, ButtonInteraction, ChannelSelectMenuBuilder, ChannelType, InteractionCallbackResponse, MessageFlags, ModalActionRowComponentBuilder, ModalBuilder, ModalComponentBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
-import { getServer } from "../db/serverRepo";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, MessageActionRowComponentBuilder, MessageFlags, ModalActionRowComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { getUserChannelInGuild } from "../db/channelsRepo";
 import { DBChannel } from "../types/types";
 
@@ -9,7 +8,20 @@ module.exports = {
         if (!interaction.guildId) return;
         let streak: DBChannel | undefined = (await getUserChannelInGuild(interaction.guildId, interaction.user.id));
         if (streak){
-            interaction.reply({content: "TODO: implement channel changing", flags: MessageFlags.Ephemeral});
+            
+            let editstreakButton = new ButtonBuilder()
+                .setLabel("Edit Streak")
+                .setCustomId(`editStreak.button:${streak.channel_id}:false`)
+                .setStyle(ButtonStyle.Primary);
+
+            let deleteStreakButton = new ButtonBuilder()
+                .setLabel("⚠️ Delete Streak")
+                .setCustomId(`deleteStreak.button:${streak.channel_id}`)
+                .setStyle(ButtonStyle.Danger);
+        
+            let row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(editstreakButton, deleteStreakButton);
+
+            interaction.reply({ content: "What do you want to do? ", flags: MessageFlags.Ephemeral, components: [row]});
             return;
         } else {
             const modal = new ModalBuilder()

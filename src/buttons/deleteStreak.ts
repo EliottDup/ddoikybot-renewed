@@ -2,7 +2,7 @@ import { ActionRowBuilder, ButtonInteraction, MessageFlags, ModalActionRowCompon
 import { getChannelById } from "../db/channelsRepo";
 
 module.exports = {
-    name: "deleteStreakModerator.button",
+    name: "deleteStreak.button",
     async execute(interaction: ButtonInteraction, ...args: string[]) {
         
         let channel = await getChannelById(args[0]);

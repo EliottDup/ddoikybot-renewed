@@ -6,12 +6,12 @@ module.exports = {
     async execute(interaction: StringSelectMenuInteraction, ...args: string[]) {
         let editstreakButton = new ButtonBuilder()
             .setLabel("Edit Streak")
-            .setCustomId(`editStreakModerator.button:${interaction.values[0]}`)
+            .setCustomId(`editStreak.button:${interaction.values[0]}:true`)
             .setStyle(ButtonStyle.Primary);
 
         let deleteStreakButton = new ButtonBuilder()
             .setLabel("⚠️ Delete Streak")
-            .setCustomId(`deleteStreakModerator.button:${interaction.values[0]}`)
+            .setCustomId(`deleteStreak.button:${interaction.values[0]}`)
             .setStyle(ButtonStyle.Danger);
         
         let channel = await getChannelById(interaction.values[0]);
