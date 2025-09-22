@@ -10,30 +10,20 @@ module.exports = {
     
     async execute(interaction: ChatInputCommandInteraction){
         if (!interaction.guildId) return;
-        let editstreakButton = new ButtonBuilder()
-            .setLabel("Edit Streak")
-            .setCustomId("editStreakModerator.button")
-            .setStyle(ButtonStyle.Primary);
 
         let editServerButton = new ButtonBuilder()
             .setLabel("Edit Server")
             .setCustomId("editServer.button")
             .setStyle(ButtonStyle.Primary);
         
-        let deleteStreakButton = new ButtonBuilder()
-            .setLabel("⚠️ Delete Streak")
-            .setCustomId("DeleteStreakModerator.button")
-            .setStyle(ButtonStyle.Danger);
-
         let deleteServerButton = new ButtonBuilder()
             .setLabel("⚠️ Delete Server")
             .setCustomId("deleteServer.button")
             .setStyle(ButtonStyle.Danger);
         
         let streakSelectMenu = new StringSelectMenuBuilder()    
-            .setCustomId("streakSelect.stringMenu")
-            .setPlaceholder("Select a streak to edit")
-            .setOptions();
+            .setCustomId("streakEdit.stringMenu.select")
+            .setPlaceholder("Select a streak to edit");
         
         let options: StringSelectMenuOptionBuilder[] = [];
         let channels = await getChannelsByServer(interaction.guildId);

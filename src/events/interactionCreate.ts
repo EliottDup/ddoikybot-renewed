@@ -1,4 +1,4 @@
-import { ButtonInteraction, ChatInputCommandInteraction, Events, Interaction, MessageFlags, ModalSubmitInteraction } from "discord.js";
+import { ButtonInteraction, ChatInputCommandInteraction, Events, Interaction, MessageFlags, ModalSubmitInteraction, StringSelectMenuInteraction } from "discord.js";
 import { ButtonModule, CommandCollection, ModalModule, StringSelectModule } from "../types/types";
 import path from "path";
 import { readdirSync } from "fs";
@@ -60,6 +60,7 @@ module.exports = {
             let { id, args } = parseCustomId(interaction.customId);
             const mdl = modals.get(id);
             if (!mdl) {
+                interaction.reply({content: "dev forgor to do this :skull:", flags: MessageFlags.Ephemeral});
                 return;
             }
             try {
@@ -68,7 +69,18 @@ module.exports = {
                 console.error(error);
             }
         } else if (interaction.isStringSelectMenu()) {
-            
+            interaction: StringSelectMenuInteraction;
+            let { id, args } = parseCustomId(interaction.customId);
+            const ssm = stringSelectMenus.get(id);
+            if (!ssm){
+                interaction.reply({content: "dev forgor to do this :skull:", flags: MessageFlags.Ephemeral});
+                return;
+            }
+            try {
+                await ssm.execute(interaction, ...args);
+            } catch (error) {
+                console.error(error);
+            }
         }
     }
 }

@@ -38,5 +38,8 @@ export async function getChannelByNameInGuild(serverId: string, name: string): P
 
 export async function getUserChannelInGuild(serverId: string, userId: string): Promise<DBChannel | undefined>{
   return fetchFirst<DBChannel>("SELECT * FROM Channels WHERE server_id = ? AND user_id = ?", [serverId, userId]);
+}
 
+export async function getChannelById(channelId: string): Promise<DBChannel | undefined> {
+  return fetchFirst<DBChannel>("SELECT * FROM Channels WHERE channel_id = ?", [channelId]);
 }

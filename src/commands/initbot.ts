@@ -36,7 +36,7 @@ module.exports = {
                 
                 const channel = interaction.options.getChannel<ChannelType.GuildText>("stat-channel");
                 if (!channel) return;
-                let message: Message<true> = await channel?.send({content: "temp:b: message", components: [row.toJSON()]});
+                let message: Message<true> = await channel?.send({content: "tem:b: message", components: [row.toJSON()]});
                 
                 let dbServer: DBServer = {id: interaction.guildId, ddoiky_active: false, main_channel: channel.id, stats_message: message.id};
                 upsertServer(dbServer);
