@@ -6,7 +6,7 @@ export async function createServersTable() {
     CREATE TABLE IF NOT EXISTS Servers (
       id VARCHAR(20) PRIMARY KEY,
       ddoiky_active BOOL,
-      main_channel VARCHAR(20),
+      main_channel VARCHAR(20) NOT NULL,
       stats_message VARCHAR(20)
     );
   `;

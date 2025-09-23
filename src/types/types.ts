@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, Collection, Client, ButtonInteraction, ModalSubmitInteraction, Interaction, StringSelectMenuInteraction } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, Collection, ButtonInteraction, ModalSubmitInteraction, StringSelectMenuInteraction } from 'discord.js';
 
 export type CommandModule = {
   data: SlashCommandBuilder; 
@@ -31,7 +31,7 @@ export type StringSelectModule = {
 export interface DBServer {
   id: string;
   ddoiky_active: boolean;
-  main_channel?: string;
+  main_channel: string;
   stats_message?: string;
 };
 export interface DBChannel {

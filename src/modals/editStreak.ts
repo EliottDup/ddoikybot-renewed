@@ -1,11 +1,12 @@
-import { ActionRowBuilder, MessageFlags, ModalActionRowComponentBuilder, ModalBuilder, ModalSubmitInteraction, TextInputBuilder } from "discord.js";
+import { MessageFlags, ModalSubmitInteraction } from "discord.js";
 import { DBChannel } from "../types/types";
-import { getChannelById, getChannelByNameInGuild, upsertChannel } from "../db/channelsRepo";
+import { getChannelById, upsertChannel } from "../db/channelsRepo";
+import { resendServerMainMessages } from "../utils";
 
 module.exports = {
     name: "editStreak.modal",
     async execute(interaction: ModalSubmitInteraction, ...args: string[]){
-        if (!interaction.guildId) return;
+        if (!interaction.guildId || !interaction.guild) return;
         let channel: DBChannel | undefined = await getChannelById(args[0]);
         let isModerator = args[1] == "true";
         if (channel == undefined) {
@@ -47,6 +48,8 @@ module.exports = {
         }
 
         await upsertChannel(channel);
+        resendServerMainMessages(interaction.guild);
+
         interaction.reply({ content: "Streak Updated", flags: MessageFlags.Ephemeral});
     }
 }

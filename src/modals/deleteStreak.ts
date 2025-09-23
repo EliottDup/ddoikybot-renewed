@@ -1,14 +1,16 @@
 import { MessageFlags, ModalSubmitInteraction } from "discord.js";
 import { deleteChannel } from "../db/channelsRepo";
+import { resendServerMainMessages } from "../utils";
 
 module.exports = {
     name: "deleteStreak.modal.confirm",
     async execute(interaction: ModalSubmitInteraction, ...args: string[]) {
         const input = interaction.fields.getTextInputValue("confirmation");
-        if(!interaction.guildId) return;
+        if(!interaction.guildId || !interaction.guild) return;
         let conf = interaction.fields.getTextInputValue("confirmation");
         if (conf == "") {
             await deleteChannel(args[0]);
+            resendServerMainMessages(interaction.guild);
             interaction.reply({content: "Channel successfully deleted.", flags: MessageFlags.Ephemeral});
         }
         else{

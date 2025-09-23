@@ -1,6 +1,7 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, ChatInputCommandInteraction, InteractionContextType, Message, MessageFlags, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from "discord.js";
+import { ChannelType, ChatInputCommandInteraction, InteractionContextType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { getServer, upsertServer } from "../db/serverRepo";
 import { DBServer } from "../types/types";
+import { resendServerMainMessages } from "../utils";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,27 +20,17 @@ module.exports = {
         if (!interaction.guildId) return;
         getServer(interaction.guildId).then( async ( server ) => {
             if (!server){
-                if (!interaction.guildId) return;
-
-                const drewButton = new ButtonBuilder()
-                    .setCustomId("drew.button")
-                    .setLabel("I Drew")
-                    .setStyle(ButtonStyle.Success);
-                
-                const createOrManageButton = new ButtonBuilder()
-                    .setCustomId("manageStreak.button")
-                    .setLabel("Manage or Create Streak")
-                    .setStyle(ButtonStyle.Success);
-
-                const row = new ActionRowBuilder()
-                    .addComponents(drewButton, createOrManageButton);
-                
+                if (!interaction.guildId || !interaction.guild) return;
                 const channel = interaction.options.getChannel<ChannelType.GuildText>("stat-channel");
                 if (!channel) return;
-                let message: Message<true> = await channel?.send({content: "tem:b: message", components: [row.toJSON()]});
+
                 
-                let dbServer: DBServer = {id: interaction.guildId, ddoiky_active: false, main_channel: channel.id, stats_message: message.id};
+                // let message: Message<true> = await channel?.send({content: "tem:b: message", components: [row.toJSON()]});
+                
+                let dbServer: DBServer = {id: interaction.guildId, ddoiky_active: false, main_channel: channel.id};
                 upsertServer(dbServer);
+
+                await resendServerMainMessages(interaction.guild);
 
                 interaction.reply({content: "done", flags: MessageFlags.Ephemeral});
             }

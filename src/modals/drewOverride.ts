@@ -1,5 +1,6 @@
 import { DiscordAPIError, MessageFlags, ModalSubmitInteraction, TextChannel } from "discord.js";
-import { getChannelByNameInGuild, getUserChannelInGuild, upsertChannel } from "../db/channelsRepo";
+import { getUserChannelInGuild, upsertChannel } from "../db/channelsRepo";
+import { resendServerMainMessages } from "../utils";
 
 module.exports = {
     name: "drewOverride.modal",
@@ -22,6 +23,7 @@ module.exports = {
                 streak.high_streak = Math.max(streak.high_streak, streak.streak);
                 streak.last_message = messageId;
                 upsertChannel(streak);
+                resendServerMainMessages(interaction.guild);
 
                 interaction.reply({ content: `Congrats, your streak has been increased to ${streak.streak}`});
                 return;

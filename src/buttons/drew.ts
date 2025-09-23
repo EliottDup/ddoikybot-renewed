@@ -1,6 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, MessageFlags, ActionRow, ActionRowBuilder, MessageActionRowComponentBuilder, Message } from 'discord.js';
 import { getUserChannelInGuild, upsertChannel } from "../db/channelsRepo";
 import { TextChannel } from "discord.js";
+import { resendServerMainMessages } from '../utils';
 
 module.exports = {
     name: "drew.button",
@@ -70,7 +71,9 @@ module.exports = {
             streak.streak++;
             streak.high_streak = Math.max(streak.high_streak, streak.streak);
             streak.last_message = message.id;
-            upsertChannel(streak);
+            await upsertChannel(streak);
+
+            resendServerMainMessages(interaction.guild);
 
             interaction.reply({ content: `Congrats, your streak has been increased to ${streak.streak}`});
             return;

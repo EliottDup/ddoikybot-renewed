@@ -1,7 +1,7 @@
-import { MessageFlags, ModalSubmitInteraction, Message, DiscordAPIError } from 'discord.js';
+import { MessageFlags, ModalSubmitInteraction, DiscordAPIError } from 'discord.js';
 import { getChannelById } from "../db/channelsRepo";
-import { DBServer } from '../types/types';
 import { getServer, upsertServer } from '../db/serverRepo';
+import { resendServerMainMessages } from '../utils';
 
 module.exports = {
     name: "editServer.modal",
@@ -29,7 +29,10 @@ module.exports = {
                 return;
             }
             server.main_channel = newChannelId;
+            server.stats_message = undefined;
             await upsertServer(server);
+            resendServerMainMessages(interaction.guild);
+
             interaction.reply({ content: "server Updated", flags: MessageFlags.Ephemeral });
         } catch (error) {
             if (error instanceof DiscordAPIError ){

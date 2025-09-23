@@ -1,12 +1,13 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, DiscordAPIError, MessageActionRowComponentBuilder, MessageFlags, ModalSubmitInteraction } from "discord.js";
 import { DBChannel } from "../types/types";
 import { upsertChannel } from "../db/channelsRepo";
+import { resendServerMainMessages } from "../utils";
 
 module.exports = {
     name: "createStreak.modal",
     async execute(interaction: ModalSubmitInteraction){
         try {
-            if (!interaction.guildId) return;
+            if (!interaction.guildId || !interaction.guild) return;
             let name: string = interaction.fields.getTextInputValue("streakCreateName");
             let channelID: string = interaction.fields.getTextInputValue("streakCreateChannel");
 
@@ -42,6 +43,7 @@ module.exports = {
             let row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(btn);
 
             channel.send({content: `channel registered with name ${name} and user ${interaction.user.tag}`, components: [row]});
+            resendServerMainMessages(interaction.guild);
             interaction.reply({content: "streak created", flags:MessageFlags.Ephemeral});
         } catch (error) {
             if (error instanceof DiscordAPIError){
