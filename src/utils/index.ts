@@ -91,13 +91,8 @@ export async function resendServerMainMessages(guild: Guild): Promise<void> {
         generateServerMainMessages(guild),
         async function(){
             if (!server.stats_message || server.stats_message === "") return;
-            console.log("fetching messages");
             let message = await channel.messages.fetch(server.stats_message);
-            // console.log("fetching last message");
-            // messages.set(server.stats_message, await channel.messages.fetch(server.stats_message));
-            console.log("bulk deleting here");
             message.delete();
-            console.log("deleted");
             return;
         }()
     ]);
