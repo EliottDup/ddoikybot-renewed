@@ -1,5 +1,5 @@
 import { DBServer } from "../types/types";
-import { execute, fetchFirst } from "./index";
+import { execute, fetchAll, fetchFirst } from "./index";
 
 export async function createServersTable() {
   const sql = `
@@ -30,4 +30,8 @@ export async function deleteServer(serverID: string){
     execute(`DELETE FROM Servers WHERE id = ?`, [serverID]),
     execute(`DELETE FROM Channels WHERE server_id == ?`, [serverID])
     ]);
+}
+
+export async function getAllServers(): Promise<DBServer[]> {
+  return fetchAll<DBServer>("SELECT * FROM Servers");
 }

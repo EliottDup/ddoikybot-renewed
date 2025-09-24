@@ -6,6 +6,8 @@ import { CommandCollection, CommandModule, EventModule } from "./types/types";
 import { closeConnection, createConnection } from "./db";
 import { createServersTable } from "./db/serverRepo";
 import { createChannelsTable } from "./db/channelsRepo";
+import { CronJob } from "cron";
+import { theCheckening } from "./utils";
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
@@ -52,6 +54,17 @@ function shutdown(){
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
-// Other
+// Cron Job :) :) :)
 
+const job = new CronJob(
+    "0 0 5 * * *", // Every day at 5am
+    function () {
+        theCheckening(client);
+    },
+    null,
+    true,
+    "Europe/Amsterdam"
+);
+
+// Start bot
 client.login(config.token);
