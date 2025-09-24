@@ -90,10 +90,14 @@ export async function resendServerMainMessages(guild: Guild): Promise<void> {
     let [messageCreateOptions, _] = await Promise.all([
         generateServerMainMessages(guild),
         async function(){
-            if (!server.stats_message || server.stats_message === "") return;
-            let message = await channel.messages.fetch(server.stats_message);
-            message.delete();
+            try {
+                if (!server.stats_message || server.stats_message === "") return;
+                let message = await channel.messages.fetch(server.stats_message);
+                message.delete();
             return;
+            } catch (error) {
+                console.log(`could not delete old stats message in server ${guild.id}, maybe it was deleted manually`);
+            }
         }()
     ]);
 
