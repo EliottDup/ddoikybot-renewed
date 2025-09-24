@@ -5,7 +5,6 @@ module.exports = {
     .setName("ping")
     .setDescription("pong!"),
     async execute(interaction: ChatInputCommandInteraction){
-
         await interaction.reply({content: "pong", flags: MessageFlags.Ephemeral})
     }
 }
