@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, DiscordAPIError, MessageActionRowComponentBuilder, MessageFlags, ModalSubmitInteraction } from "discord.js";
 import { DBChannel } from "../types/types";
-import { upsertChannel } from "../db/channelsRepo";
+import { getChannelById, upsertChannel } from "../db/channelsRepo";
 import { resendServerMainMessages } from "../utils";
 
 module.exports = {
@@ -12,6 +12,10 @@ module.exports = {
             let channelID: string = interaction.fields.getTextInputValue("streakCreateChannel");
 
             let channel = await interaction.client.channels.fetch(channelID);
+            let tempStreak = await getChannelById(channelID);
+            if (tempStreak) {
+                interaction.reply({ content: `channel already registered by user <@${tempStreak.user_id}>`, flags: MessageFlags.Ephemeral });
+            }
 
             if (!channel) {
                 interaction.reply({ content: "channel not found", flags: MessageFlags.Ephemeral});
