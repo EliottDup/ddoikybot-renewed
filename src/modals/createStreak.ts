@@ -45,10 +45,13 @@ module.exports = {
                 .setStyle(ButtonStyle.Primary);
 
             let row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(btn);
-
-            channel.send({content: `channel registered with name ${name} and user ${interaction.user.tag}`, components: [row]});
+            try {
+                channel.send({content: `channel registered with name ${name} and user ${interaction.user.tag}`, components: [row]});
+            } catch (error) {
+                console.log("bot tried to send confirmation message to a newly created streak, but failed, probs missing permission, no biggie tho");
+            }
             resendServerMainMessages(interaction.guild);
-            interaction.reply({content: "streak created", flags:MessageFlags.Ephemeral});
+            interaction.reply({content: `channel ${channel.name} registered with name ${name} and user ${interaction.user.tag}`, flags:MessageFlags.Ephemeral});
         } catch (error) {
             if (error instanceof DiscordAPIError){
                 interaction.reply({ content: error.message, flags: MessageFlags.Ephemeral });
