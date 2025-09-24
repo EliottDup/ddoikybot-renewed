@@ -75,7 +75,7 @@ module.exports = {
 
             resendServerMainMessages(interaction.guild);
 
-            interaction.reply({ content: `Congrats, your streak has been increased to ${streak.streak}`});
+            interaction.reply({ content: `Congrats, your streak has been increased to ${streak.streak}`, flags: MessageFlags.Ephemeral});
             return;
         }
     }
