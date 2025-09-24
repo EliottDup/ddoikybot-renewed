@@ -10,6 +10,7 @@ const commands: SlashCommandBuilder[] = []
 
 for (const file of commandFiles) {
     const command = require(path.join(commanddPath, file));
+    console.log("detected command", command.data.name);
     commands.push(command.data.toJSON());
 }
 
@@ -22,7 +23,7 @@ const rest = new REST({ version: "10" }).setToken(config.token);
             Routes.applicationCommands(config.id),
             { body: commands }
         );
-        console.log("commands successfully deployed to guild");
+        console.log("commands successfully deployed");
     } catch (error){
         console.error(error);
     }
