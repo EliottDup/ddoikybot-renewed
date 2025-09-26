@@ -33,7 +33,6 @@ module.exports = {
         let message: Message<true> | null = null;
 
         for (let [snfl, msg] of messages){
-            console.log(snfl, msg.content, msg.attachments.size);
             if (msg.attachments.size > 0 && // has attachment
                 msg.author.id == streak.user_id && // is by streak owner
                 Math.floor(Math.abs((now.getTime() - msg.createdAt.getTime())/3_600_000)) // was less than 24 hrs ago
@@ -63,8 +62,6 @@ module.exports = {
             });
             return;
         }
-
-        console.log(message.createdAt);
 
         if (streak.draw_counter == 0 || (streak.draw_counter == 1 && now.getHours() < 5)) {
             streak.draw_counter++;

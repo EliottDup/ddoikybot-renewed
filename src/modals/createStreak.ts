@@ -46,13 +46,13 @@ module.exports = {
 
             let row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(btn);
             try {
-                channel.send({content: `channel registered with name ${name} and user ${interaction.user.tag}`, components: [row]});
+                channel.send({content: `channel registered with name "${name}" and user "${interaction.user.tag}"`, components: [row]});
             } catch (error) {
                 console.log("bot tried to send confirmation message to a newly created streak, but failed, probs missing permission, no biggie tho");
             }
             resendServerMainMessages(interaction.guild);
-            interaction.reply({content: `channel ${channel.name} registered with name ${name} and user ${interaction.user.tag}`, flags:MessageFlags.Ephemeral});
-            console.log(`created streak ${name} for user ${interaction.user.tag} in guild ${interaction.guild.name}`);
+            interaction.reply({content: `channel "${channel.name}" registered with name "${name}" and user "${interaction.user.tag}"`, flags:MessageFlags.Ephemeral});
+            console.log(`created streak "${name}" for user "${interaction.user.tag}" in guild "${interaction.guild.name}"`);
         } catch (error) {
             if (error instanceof DiscordAPIError){
                 interaction.reply({ content: error.message, flags: MessageFlags.Ephemeral });
