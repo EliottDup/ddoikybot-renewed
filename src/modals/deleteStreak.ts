@@ -12,6 +12,7 @@ module.exports = {
             await deleteChannel(args[0]);
             resendServerMainMessages(interaction.guild);
             interaction.reply({content: "Channel successfully deleted.", flags: MessageFlags.Ephemeral});
+            console.log(`streak with id ${args[0]} for user ${interaction.user.tag} in guild ${interaction.guild.name}`);
         }
         else{
             interaction.reply({ content: "Confirmation text not cleared, channel deletion cancelled.", flags: MessageFlags.Ephemeral});

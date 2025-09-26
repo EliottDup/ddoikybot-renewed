@@ -14,7 +14,9 @@ export async function generateServerMainMessages(guild: Guild): Promise<MessageC
         function(): APIEmbedField {
             let value = "";
             for (const channel of channels) {
-                value += `${channel.name}\n`;
+                if (channel.is_alive){
+                    value += `${channel.name}\n`;
+                }
             }
             return {name: "Alive DDOIKY members", value: value, inline: true};
         }(),
@@ -167,5 +169,6 @@ export async function theCheckening(client: Client): Promise<void> {
     for (const server of servers){
         checkServer(client, server);
     }
+    console.log("The Checkening has ended and did not crash \\o/");
 }
 

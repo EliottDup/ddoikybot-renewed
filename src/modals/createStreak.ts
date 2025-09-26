@@ -52,6 +52,7 @@ module.exports = {
             }
             resendServerMainMessages(interaction.guild);
             interaction.reply({content: `channel ${channel.name} registered with name ${name} and user ${interaction.user.tag}`, flags:MessageFlags.Ephemeral});
+            console.log(`created streak ${name} for user ${interaction.user.tag} in guild ${interaction.guild.name}`);
         } catch (error) {
             if (error instanceof DiscordAPIError){
                 interaction.reply({ content: error.message, flags: MessageFlags.Ephemeral });
