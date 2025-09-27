@@ -28,6 +28,6 @@ module.exports = {
         let channel = await interaction.guild.channels.fetch(server.main_channel) as TextChannel;
         await channel?.send("@everyone Another ddoiky has been started")
         resendServerMainMessages(interaction.guild);
-        interaction.reply({content: "Ddoiky started"});
+        interaction.reply({content: "Ddoiky started", flags:MessageFlags.Ephemeral});
     }
 }

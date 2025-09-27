@@ -1,4 +1,4 @@
-import { ActionRowBuilder, APIEmbedField, ButtonBuilder, ButtonStyle, Client, Collection, EmbedBuilder, Guild, MessageActionRowComponentBuilder, MessageCreateOptions, TextChannel } from "discord.js";
+import { ActionRowBuilder, APIEmbedField, ButtonBuilder, ButtonStyle, Client, Collection, EmbedBuilder, Guild, Message, MessageActionRowComponentBuilder, MessageCreateOptions, TextChannel } from "discord.js";
 import { getChannelsByServer, upsertChannel } from "../db/channelsRepo";
 import { getAllServers, getServer, upsertServer } from "../db/serverRepo";
 import { DBServer } from "../types/types";
@@ -25,7 +25,11 @@ export async function generateServerMainMessages(guild: Guild): Promise<MessageC
     ]
 
     let infoEmbed = new EmbedBuilder()
-        .addFields(infoEmbedFields); 
+        .addFields(infoEmbedFields)
+        .setColor("#ff0000"); 
+    if (server.ddoiky_active)(
+        infoEmbed.setColor("#00ff00")
+    )
 
     const baseEmbedField: APIEmbedField = { name: "Name:", value: "User:\nChannel:\nLast Drawing:\nStreak:\nHigh Score:\nDDOIKY Status:\n", inline: true};
     let userFields: APIEmbedField[] = [];
@@ -85,7 +89,7 @@ export async function generateServerMainMessages(guild: Guild): Promise<MessageC
     return messages;
 }
 
-export async function resendServerMainMessages(guild: Guild): Promise<void> {
+export async function resendServerMainMessages(guild: Guild, deleteAllMessages: boolean = false): Promise<void> {
     let server = await getServer(guild.id);
     if (!server) return;
 
@@ -98,7 +102,10 @@ export async function resendServerMainMessages(guild: Guild): Promise<void> {
         async function(){
             try {
                 if (!server.stats_message || server.stats_message === "") return;
-                let messages = await channel.messages.fetch({ before: server.stats_message, limit: 10});
+                let messages: Collection<string, Message<true>> = new Collection<string, Message<true>>();
+                if (deleteAllMessages){
+                    messages = await channel.messages.fetch({ before: server.stats_message, limit: 10});
+                }
                 messages.set(server.stats_message, await channel.messages.fetch(server.stats_message));
                 for (const [snowflake, message] of messages){
                     if (message.author.id != config.id) {
@@ -180,7 +187,7 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
         await upsertServer(server);
     }
 
-    resendServerMainMessages(mainChannel.guild);
+    resendServerMainMessages(mainChannel.guild, true);
 }
 
 export async function theCheckening(client: Client): Promise<void> {
