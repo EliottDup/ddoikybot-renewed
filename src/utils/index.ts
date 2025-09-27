@@ -138,7 +138,11 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
 
     let deathAnnouncements: Collection<string, number> = new Collection<string, number>();
 
+    let aliveUsers: string[] = [];
+    let survivedUsers: string[] = [];
+
     for (const channel of channels){
+        if (channel.is_alive && server.ddoiky_active) aliveUsers.push(channel.user_id);
         if (channel.draw_counter == 0){
             //DEATH
             if (channel.streak >= 10 || (server.ddoiky_active && channel.is_alive)){
@@ -152,6 +156,7 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
             channel.draw_counter -= 1;
             upsertChannel(channel);
         }
+        if (channel.is_alive && server.ddoiky_active) survivedUsers.push(channel.user_id);
     }
     if (deathAnnouncements.size > 0){
         let description = "The following members have died or lost a promising streak:\n";
@@ -160,6 +165,21 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
         }
         await mainChannel.send({embeds: [new EmbedBuilder().setTitle("Death Announcement").setDescription(description)]});
     }
+
+    if (server.ddoiky_active && survivedUsers.length == 0){
+        let text: string = "@everyone \nCongratulations to the following users on winning the ddoiky: ";
+        for (let user of aliveUsers) text += `<@${user}>\n`;
+        await mainChannel.send(text);
+        server.ddoiky_active = false;
+        await upsertServer(server);
+    }
+    else if (server.ddoiky_active && survivedUsers.length == 1){
+        let text: string = `@everyone \nCongratulations to <@${survivedUsers[0]}> for winning the ddoiky!`;
+        await mainChannel.send(text);
+        server.ddoiky_active = false;
+        await upsertServer(server);
+    }
+
     resendServerMainMessages(mainChannel.guild);
 }
 
