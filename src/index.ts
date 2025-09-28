@@ -18,7 +18,7 @@ const client = new Client({
 createConnection().then(() => {
     createServersTable();
     createChannelsTable();
-    applyMigrations();
+    // applyMigrations();
 });
 
 
