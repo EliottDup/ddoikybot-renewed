@@ -29,7 +29,7 @@ module.exports = {
             return;
         }
         
-        const messages = await channel.messages.fetch({ limit: 10, cache: true, before: streak.last_message});
+        const messages = await channel.messages.fetch({ limit: 10, cache: true, after: streak.last_message});
         let message: Message<true> | null = null;
 
         for (let [snfl, msg] of messages){
