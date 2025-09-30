@@ -1,4 +1,4 @@
-import {ChatInputCommandInteraction, Client, Collection, GatewayIntentBits, Interaction, MessageFlags, SlashCommandBuilder} from "discord.js"
+import {Client, Collection, GatewayIntentBits} from "discord.js"
 import config from "./config/config.json"
 import path from "path";
 import { readdirSync } from "fs";
@@ -8,6 +8,7 @@ import { createServersTable } from "./db/serverRepo";
 import { createChannelsTable } from "./db/channelsRepo";
 import { CronJob } from "cron";
 import { theCheckening } from "./utils";
+import { applyMigrations } from "./db/migrations";
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
@@ -17,6 +18,7 @@ const client = new Client({
 createConnection().then(() => {
     createServersTable();
     createChannelsTable();
+    // applyMigrations();
 });
 
 
