@@ -151,6 +151,7 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
     for (const channel of channels){
         if (channel.is_alive && server.ddoiky_active) aliveUsers.push(channel.user_id);
         if (channel.draw_counter == 0){
+            console.log(`A user died. ${channel.user_id}`);
             //DEATH
             if (channel.streak >= 10 || (server.ddoiky_active && channel.is_alive)){
                 deathAnnouncements.set(channel.user_id, channel.streak);
@@ -165,16 +166,9 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
         }
         if (channel.is_alive && server.ddoiky_active) survivedUsers.push(channel.user_id);
     }
-    if (deathAnnouncements.size > 0){
-        let description = "The following members have died or lost a promising streak:\n";
-        for (const [userID, streak] of deathAnnouncements){
-            description += `<@${userID}> with a streak of ${streak.toString()}\n`;
-        }
-        await mainChannel.send({embeds: [new EmbedBuilder().setTitle("Death Announcement").setDescription(description)]});
-    }
 
     if (server.ddoiky_active && survivedUsers.length == 0){
-        let text: string = "@everyone \nCongratulations to the following users on winning the ddoiky: ";
+        let text: string = "@everyone \nCongratulations to the following users on winning the ddoiky on a tie: ";
         for (let user of aliveUsers) text += `<@${user}>\n`;
         await mainChannel.send(text);
         server.ddoiky_active = false;
@@ -188,6 +182,16 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
     }
 
     resendServerMainMessages(mainChannel.guild, true);
+
+    if (deathAnnouncements.size > 0){
+        let description = "The following members have died or lost a strong streak:\n";
+        for (const [userID, streak] of deathAnnouncements){
+            console.log(`user ${userID} died`);
+            description += `<@${userID}> with a streak of ${streak.toString()}\n`;
+        }
+        await mainChannel.send({embeds: [new EmbedBuilder().setTitle("Death Announcement").setDescription(description)]});
+    }
+
 }
 
 export async function theCheckening(client: Client): Promise<void> {
