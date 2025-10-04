@@ -29,13 +29,13 @@ module.exports = {
             return;
         }
         
-        const messages = await channel.messages.fetch({ limit: 10, cache: true, before: streak.last_message});
+        const messages = await channel.messages.fetch({ limit: 10, cache: true, after: streak.last_message});
         let message: Message<true> | null = null;
-
+        
         for (let [snfl, msg] of messages){
             if (msg.attachments.size > 0 && // has attachment
                 msg.author.id == streak.user_id && // is by streak owner
-                Math.floor(Math.abs((now.getTime() - msg.createdAt.getTime())/3_600_000)) // was less than 24 hrs ago
+                Math.floor(Math.abs((now.getTime() - msg.createdAt.getTime())/3_600_000)) < 24 // was less than 24 hrs ago
             ){
                 message = msg
                 break;
@@ -73,6 +73,11 @@ module.exports = {
             resendServerMainMessages(interaction.guild);
 
             interaction.reply({ content: `Congrats, your streak has been increased to ${streak.streak}`, flags: MessageFlags.Ephemeral});
+            console.log(`User ${interaction.user.tag} in ${interaction.guild.name} has drawn, streak is now ${streak.streak}, streak counter is ${streak.draw_counter}`);
+            return;
+        }
+        else {
+            interaction.reply({ content: "You have already drawn today. (I think, this might be wronk)", flags: MessageFlags.Ephemeral});
             return;
         }
     }
