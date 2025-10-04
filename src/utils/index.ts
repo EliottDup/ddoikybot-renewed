@@ -158,11 +158,11 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
             }
             channel.is_alive = false;
             channel.streak = 0;
-            upsertChannel(channel);
+            await upsertChannel(channel);
         }
         else {
             channel.draw_counter -= 1;
-            upsertChannel(channel);
+            await upsertChannel(channel);
         }
         if (channel.is_alive && server.ddoiky_active) survivedUsers.push(channel.user_id);
     }
@@ -181,7 +181,7 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
         await upsertServer(server);
     }
 
-    resendServerMainMessages(mainChannel.guild, true);
+    await resendServerMainMessages(mainChannel.guild, true);
 
     if (deathAnnouncements.size > 0){
         let description = "The following members have died or lost a strong streak:\n";
@@ -189,7 +189,7 @@ async function checkServer(client: Client, server: DBServer): Promise<void> {
             console.log(`user ${userID} died`);
             description += `<@${userID}> with a streak of ${streak.toString()}\n`;
         }
-        await mainChannel.send({embeds: [new EmbedBuilder().setTitle("Death Announcement").setDescription(description)]});
+        mainChannel.send({embeds: [new EmbedBuilder().setTitle("Death Announcement").setDescription(description)]});
     }
 
 }
